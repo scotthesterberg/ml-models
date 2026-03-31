@@ -25,6 +25,10 @@ def generate_readme(model_name: str, model_source: ModelSource) -> str:
                 tags.append("multilingual")
         case ModelSource.INSIGHTFACE:
             tags = ["immich", "facial-recognition"]
+        case ModelSource.YOLOV8:
+            tags = ["immich", "pet-detection", "yolov8"]
+        case ModelSource.MEGADESCRIPTOR:
+            tags = ["immich", "pet-recognition", "megadescriptor"]
         case _:
             raise ValueError(f"Unsupported model source {model_source}")
 
@@ -52,7 +56,7 @@ def export(
         hf_model_name = model_name
     output_dir = output_dir / model_name
     match model_source:
-        case ModelSource.MCLIP | ModelSource.OPENCLIP:
+        case ModelSource.MCLIP | ModelSource.OPENCLIP | ModelSource.YOLOV8 | ModelSource.MEGADESCRIPTOR:
             output_dir.mkdir(parents=True, exist_ok=True)
             onnx_export(hf_model_name, model_source, output_dir, cache=cache)
         case ModelSource.INSIGHTFACE:
